@@ -8,11 +8,10 @@ public class Group
     public int Id { get; set; }
 
     [Required]
-    [RegularExpression(@"^[a-zа-яA-ZА-Я-\s]+$")]
+    [RegularExpression(@"^[a-zа-яA-ZА-ЯіїєґІЇЄҐ\s-']+$")]
     public required string Name { get; set; }
 
     [MaxLength(200, ErrorMessage = "Group description's text length must be no more that 200 symbols")]
-    [RegularExpression(@"^[a-zа-яA-ZА-Я-\s]+$")]
     public string Description { get; set; } = String.Empty;
 
     public virtual ICollection<Address>? Addresses { get; set; } = new List<Address>();

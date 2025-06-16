@@ -9,7 +9,7 @@ public class ApplicationDbContext : DbContext
 {
     public DbSet<Address> Addresses { get; set; }
     public DbSet<Group> Groups { get; set; }
-    public DbSet<Schedule> schedules { get; set; }
+    public DbSet<Schedule> Schedules { get; set; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 

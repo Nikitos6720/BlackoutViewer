@@ -9,9 +9,11 @@ public class ScheduleConfiguration : IEntityTypeConfiguration<Schedule>
 {
     public void Configure(EntityTypeBuilder<Schedule> builder)
     {
+        builder.ToTable("Schedules");
         builder.HasKey(s => s.Id);
 
-        builder.HasMany(s => s.Groups)
-               .WithMany(g => g.Schedules);
+        builder.HasOne(s => s.Group)
+               .WithMany(g => g.Schedules)
+               .HasForeignKey(s => s.GroupId);
     }
 }

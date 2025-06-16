@@ -17,6 +17,8 @@ public class GroupConfiguration : IEntityTypeConfiguration<Group>
                .OnDelete(DeleteBehavior.SetNull);
         
         builder.HasMany(g => g.Schedules)
-               .WithMany(s => s.Groups);
+               .WithOne(s => s.Group)
+               .HasForeignKey(s => s.GroupId)
+               .OnDelete(DeleteBehavior.Cascade);
     }
 }

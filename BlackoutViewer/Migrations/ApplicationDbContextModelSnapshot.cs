@@ -81,27 +81,17 @@ namespace BlackoutViewer.Migrations
                     b.Property<TimeOnly>("EndTime")
                         .HasColumnType("time without time zone");
 
+                    b.Property<int>("GroupId")
+                        .HasColumnType("integer");
+
                     b.Property<TimeOnly>("StartTime")
                         .HasColumnType("time without time zone");
 
                     b.HasKey("Id");
 
-                    b.ToTable("schedules");
-                });
+                    b.HasIndex("GroupId");
 
-            modelBuilder.Entity("GroupSchedule", b =>
-                {
-                    b.Property<int>("GroupsId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("SchedulesId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("GroupsId", "SchedulesId");
-
-                    b.HasIndex("SchedulesId");
-
-                    b.ToTable("GroupSchedule");
+                    b.ToTable("Schedules", (string)null);
                 });
 
             modelBuilder.Entity("BlackoutViewer.Models.Address", b =>
@@ -114,24 +104,22 @@ namespace BlackoutViewer.Migrations
                     b.Navigation("Group");
                 });
 
-            modelBuilder.Entity("GroupSchedule", b =>
+            modelBuilder.Entity("BlackoutViewer.Models.Schedule", b =>
                 {
-                    b.HasOne("BlackoutViewer.Models.Group", null)
-                        .WithMany()
-                        .HasForeignKey("GroupsId")
+                    b.HasOne("BlackoutViewer.Models.Group", "Group")
+                        .WithMany("Schedules")
+                        .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BlackoutViewer.Models.Schedule", null)
-                        .WithMany()
-                        .HasForeignKey("SchedulesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("BlackoutViewer.Models.Group", b =>
                 {
                     b.Navigation("Addresses");
+
+                    b.Navigation("Schedules");
                 });
 #pragma warning restore 612, 618
         }

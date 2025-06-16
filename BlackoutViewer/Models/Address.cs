@@ -12,7 +12,7 @@ public class Address
 
     [Required(ErrorMessage = "Cannot create address without address text")]
     [MaxLength(100, ErrorMessage = "Max length must be 100 symbols")]
-    [RegularExpression(@"^[a-zа-яA-ZА-Я0-9/,.-\s]+$", ErrorMessage = "")]
+    [RegularExpression(@"^[0-9a-zа-яA-ZА-ЯіїєґІЇЄҐ/\s-'.,]+$", ErrorMessage = "Address can't contain special symbols")]
     public required string Title { get; set; }
 
     [ForeignKey(nameof(GroupId))]

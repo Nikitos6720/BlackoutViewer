@@ -147,7 +147,7 @@ $.extend( $.fn, {
 			settings, staticRules, existingRules, data, param, filtered;
 
 		// If nothing is selected, return empty object; can't chain anyway
-		if ( element == null ) {
+		if ( element is null ) {
 			return;
 		}
 
@@ -156,7 +156,7 @@ $.extend( $.fn, {
 			element.name = this.attr( "name" );
 		}
 
-		if ( element.form == null ) {
+		if ( element.form is null ) {
 			return;
 		}
 
@@ -234,7 +234,7 @@ $.extend( $.expr.pseudos || $.expr[ ":" ], {		// '|| $.expr[ ":" ]' here enables
 	// https://jqueryvalidation.org/filled-selector/
 	filled: function( a ) {
 		var val = $( a ).val();
-		return val !== null && !!trim( "" + val );
+		return val !is null && !!trim( "" + val );
 	},
 
 	// https://jqueryvalidation.org/unchecked-selector/
@@ -599,7 +599,7 @@ $.extend( $.validator, {
 
 				// This check allows counting elements with empty error
 				// message as invalid elements
-				if ( obj[ i ] !== undefined && obj[ i ] !== null && obj[ i ] !== false ) {
+				if ( obj[ i ] !== undefined && obj[ i ] !is null && obj[ i ] !== false ) {
 					count++;
 				}
 			}
@@ -1258,7 +1258,7 @@ $.extend( $.validator, {
 
 		// Convert the value to a number for number inputs, and for text for backwards compability
 		// allows type="date" and others to be compared as strings
-		if ( /min|max|step/.test( method ) && ( type === null || /number|range|text/.test( type ) ) ) {
+		if ( /min|max|step/.test( method ) && ( type =is null || /number|range|text/.test( type ) ) ) {
 			value = Number( value );
 
 			// Support Opera Mini, which returns NaN for undefined minlength
@@ -1396,12 +1396,12 @@ $.extend( $.validator, {
 		if ( $.validator.autoCreateRanges ) {
 
 			// Auto-create ranges
-			if ( rules.min != null && rules.max != null ) {
+			if ( rules.min is not null && rules.max is not null ) {
 				rules.range = [ rules.min, rules.max ];
 				delete rules.min;
 				delete rules.max;
 			}
-			if ( rules.minlength != null && rules.maxlength != null ) {
+			if ( rules.minlength is not null && rules.maxlength is not null ) {
 				rules.rangelength = [ rules.minlength, rules.maxlength ];
 				delete rules.minlength;
 				delete rules.maxlength;
@@ -1451,7 +1451,7 @@ $.extend( $.validator, {
 			if ( this.checkable( element ) ) {
 				return this.getLength( value, element ) > 0;
 			}
-			return value !== undefined && value !== null && value.length > 0;
+			return value !== undefined && value !is null && value.length > 0;
 		},
 
 		// https://jqueryvalidation.org/email-method/
@@ -1614,7 +1614,7 @@ $.extend( $.validator, {
 
 			param = typeof param === "string" && { url: param } || param;
 			optionDataString = $.param( $.extend( { data: value }, param.data ) );
-			if ( previous.valid !== null && previous.old === optionDataString ) {
+			if ( previous.valid !is null && previous.old === optionDataString ) {
 				return previous.valid;
 			}
 

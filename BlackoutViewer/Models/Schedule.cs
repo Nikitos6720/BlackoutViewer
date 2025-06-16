@@ -7,6 +7,8 @@ namespace BlackoutViewer.Models
         [Key]
         public int Id { get; set; }
 
+        public required int GroupId { get; set; }
+
         [Required]
         public required DayEnum Day { get; set; }
 
@@ -16,6 +18,6 @@ namespace BlackoutViewer.Models
         [Required]
         public required TimeOnly EndTime { get; set; }
 
-        public virtual ICollection<Group>? Groups { get; set; }
+        public virtual Group? Group { get; set; }
     }
 }

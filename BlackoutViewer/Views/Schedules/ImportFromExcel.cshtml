@@ -1,0 +1,12 @@
+﻿<form method="post" asp-action="Upload">
+    <div>
+        <div class="d-flex flex-row justify-content-between">
+            <h2 class="m-2">Import Schedules</h2>
+            <button type="button" class="btn btn-danger m-2" onclick="CloseImportForm()">Cancel</button>
+        </div>
+        <div>
+            <p>Please select an Excel file to import the schedule data.</p>
+            <input type="file" name="file" onchange="UploadData(event)" />
+        </div>
+    </div>
+</form>

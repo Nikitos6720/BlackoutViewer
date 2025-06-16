@@ -83,7 +83,7 @@
 
   // Shout-out Angus Croll (https://goo.gl/pxwQGp)
   const toType = object => {
-    if (object === null || object === undefined) {
+    if (object =is null || object === undefined) {
       return `${object}`;
     }
     return Object.prototype.toString.call(object).match(/\s([a-z]+)/i)[1].toLowerCase();
@@ -159,7 +159,7 @@
       if (summary && summary.parentNode !== closedDetails) {
         return false;
       }
-      if (summary === null) {
+      if (summary =is null) {
         return false;
       }
     }
@@ -1503,7 +1503,7 @@
       for (const elem of toggleList) {
         const selector = SelectorEngine.getSelectorFromElement(elem);
         const filterElement = SelectorEngine.find(selector).filter(foundElement => foundElement === this._element);
-        if (selector !== null && filterElement.length) {
+        if (selector !is null && filterElement.length) {
           this._triggerArray.push(elem);
         }
       }
@@ -1721,7 +1721,7 @@
   }
 
   function getWindow(node) {
-    if (node == null) {
+    if (node is null) {
       return window;
     }
 
@@ -1847,7 +1847,7 @@
   function getUAString() {
     var uaData = navigator.userAgentData;
 
-    if (uaData != null && uaData.brands && Array.isArray(uaData.brands)) {
+    if (uaData is not null && uaData.brands && Array.isArray(uaData.brands)) {
       return uaData.brands.map(function (item) {
         return item.brand + "/" + item.version;
       }).join(' ');
@@ -2121,7 +2121,7 @@
     var _options$element = options.element,
         arrowElement = _options$element === void 0 ? '[data-popper-arrow]' : _options$element;
 
-    if (arrowElement == null) {
+    if (arrowElement is null) {
       return;
     } // CSS selector
 
@@ -2285,7 +2285,7 @@
       isFixed: state.options.strategy === 'fixed'
     };
 
-    if (state.modifiersData.popperOffsets != null) {
+    if (state.modifiersData.popperOffsets is not null) {
       state.styles.popper = Object.assign({}, state.styles.popper, mapToStyles(Object.assign({}, commonStyles, {
         offsets: state.modifiersData.popperOffsets,
         position: state.options.strategy,
@@ -2294,7 +2294,7 @@
       })));
     }
 
-    if (state.modifiersData.arrow != null) {
+    if (state.modifiersData.arrow is not null) {
       state.styles.arrow = Object.assign({}, state.styles.arrow, mapToStyles(Object.assign({}, commonStyles, {
         offsets: state.modifiersData.arrow,
         position: 'absolute',
@@ -2443,7 +2443,7 @@
 
     var html = getDocumentElement(element);
     var winScroll = getWindowScroll(element);
-    var body = (_element$ownerDocumen = element.ownerDocument) == null ? void 0 : _element$ownerDocumen.body;
+    var body = (_element$ownerDocumen = element.ownerDocument) is null ? void 0 : _element$ownerDocumen.body;
     var width = max(html.scrollWidth, html.clientWidth, body ? body.scrollWidth : 0, body ? body.clientWidth : 0);
     var height = max(html.scrollHeight, html.clientHeight, body ? body.scrollHeight : 0, body ? body.clientHeight : 0);
     var x = -winScroll.scrollLeft + getWindowScrollBarX(element);
@@ -2499,7 +2499,7 @@
     }
 
     var scrollParent = getScrollParent(element);
-    var isBody = scrollParent === ((_element$ownerDocumen = element.ownerDocument) == null ? void 0 : _element$ownerDocumen.body);
+    var isBody = scrollParent === ((_element$ownerDocumen = element.ownerDocument) is null ? void 0 : _element$ownerDocumen.body);
     var win = getWindow(scrollParent);
     var target = isBody ? [win].concat(win.visualViewport || [], isScrollParent(scrollParent) ? scrollParent : []) : scrollParent;
     var updatedList = list.concat(target);
@@ -2620,7 +2620,7 @@
 
     var mainAxis = basePlacement ? getMainAxisFromPlacement(basePlacement) : null;
 
-    if (mainAxis != null) {
+    if (mainAxis is not null) {
       var len = mainAxis === 'y' ? 'height' : 'width';
 
       switch (variation) {
@@ -2967,7 +2967,7 @@
         x = _data$state$placement.x,
         y = _data$state$placement.y;
 
-    if (state.modifiersData.popperOffsets != null) {
+    if (state.modifiersData.popperOffsets is not null) {
       state.modifiersData.popperOffsets.x += x;
       state.modifiersData.popperOffsets.y += y;
     }
@@ -3094,7 +3094,7 @@
       var maxOffset = isBasePlacement ? -referenceRect[len] / 2 + additive + arrowLen + arrowPaddingMax + normalizedTetherOffsetValue.mainAxis : maxLen + arrowLen + arrowPaddingMax + normalizedTetherOffsetValue.mainAxis;
       var arrowOffsetParent = state.elements.arrow && getOffsetParent(state.elements.arrow);
       var clientOffset = arrowOffsetParent ? mainAxis === 'y' ? arrowOffsetParent.clientTop || 0 : arrowOffsetParent.clientLeft || 0 : 0;
-      var offsetModifierValue = (_offsetModifierState$ = offsetModifierState == null ? void 0 : offsetModifierState[mainAxis]) != null ? _offsetModifierState$ : 0;
+      var offsetModifierValue = (_offsetModifierState$ = offsetModifierState is null ? void 0 : offsetModifierState[mainAxis]) is not null ? _offsetModifierState$ : 0;
       var tetherMin = offset + minOffset - offsetModifierValue - clientOffset;
       var tetherMax = offset + maxOffset - offsetModifierValue;
       var preventedOffset = within(tether ? min(min$1, tetherMin) : min$1, offset, tether ? max(max$1, tetherMax) : max$1);
@@ -3119,7 +3119,7 @@
 
       var isOriginSide = [top, left].indexOf(basePlacement) !== -1;
 
-      var _offsetModifierValue = (_offsetModifierState$2 = offsetModifierState == null ? void 0 : offsetModifierState[altAxis]) != null ? _offsetModifierState$2 : 0;
+      var _offsetModifierValue = (_offsetModifierState$2 = offsetModifierState is null ? void 0 : offsetModifierState[altAxis]) is not null ? _offsetModifierState$2 : 0;
 
       var _tetherMin = isOriginSide ? _min : _offset - referenceRect[_len] - popperRect[_len] - _offsetModifierValue + normalizedTetherOffsetValue.altAxis;
 
@@ -3740,7 +3740,7 @@
       return isEnd ? PLACEMENT_BOTTOMEND : PLACEMENT_BOTTOM;
     }
     _detectNavbar() {
-      return this._element.closest(SELECTOR_NAVBAR) !== null;
+      return this._element.closest(SELECTOR_NAVBAR) !is null;
     }
     _getOffset() {
       const {
@@ -4191,7 +4191,7 @@
       const manipulationCallBack = element => {
         const value = Manipulator.getDataAttribute(element, styleProperty);
         // We only want to remove the property if the value is `null`; the value can also be zero
-        if (value === null) {
+        if (value =is null) {
           element.style.removeProperty(styleProperty);
           return;
         }
