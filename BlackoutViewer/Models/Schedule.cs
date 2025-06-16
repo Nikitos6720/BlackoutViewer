@@ -1,0 +1,21 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace BlackoutViewer.Models
+{
+    public class Schedule
+    {
+        [Key]
+        public int Id { get; set; }
+
+        [Required]
+        public required DayEnum Day { get; set; }
+
+        [Required]
+        public required TimeOnly StartTime { get; set; }
+
+        [Required]
+        public required TimeOnly EndTime { get; set; }
+
+        public virtual ICollection<Group>? Groups { get; set; }
+    }
+}
