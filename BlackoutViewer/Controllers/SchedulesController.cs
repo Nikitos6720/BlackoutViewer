@@ -12,6 +12,8 @@ public class SchedulesController : Controller
     private readonly ApplicationDbContext _context;
     private readonly IDataConverter _dataConverter;
 
+    private List<Schedule> _schedulesFromFile = [];
+
     public SchedulesController(ApplicationDbContext context, IDataConverter dataConverter)
     {
         _context = context;
@@ -109,8 +111,8 @@ public class SchedulesController : Controller
         }
 
         var schedule = await _context.Schedules
-            .Include(s => s.Group)
-            .FirstOrDefaultAsync(m => m.Id == id);
+                                     .Include(s => s.Group)
+                                     .FirstOrDefaultAsync(m => m.Id == id);
 
         if (schedule is null)
         {
@@ -142,22 +144,51 @@ public class SchedulesController : Controller
         {
             return BadRequest("No file uploaded.");
         }
-        using var reader = new StreamReader(file.OpenReadStream());
-        string content = await reader.ReadToEndAsync();
 
-        var schedules = await _dataConverter.ConvertAsync(file);
-        if (schedules.Count == 0)
+        _schedulesFromFile = await _dataConverter.ConvertAsync(file);
+        
+        if (_schedulesFromFile.Count == 0)
         {
             return BadRequest("No valid schedules found in the file.");
         }
 
-        foreach (var schedule in schedules)
+        await RemoveSchedules();
+
+        foreach (var schedule in _schedulesFromFile)
         {
-            if (!ModelState.IsValid)
+            if (!await AppendSchedule(schedule))
             {
-                return BadRequest("Invalid schedule data.");
+                return BadRequest("Error appending schedule. Please check the data format.");
             }
-            _context.Schedules.Add(schedule);
+        }
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            return BadRequest($"Error saving schedules: {ex.Message}");
+        }
+        return Json("data: \"success\"");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateList()
+    {
+        if (_schedulesFromFile.Count == 0)
+        {
+            return BadRequest("No valid schedules found in the file.");
+        }
+
+        await RemoveSchedules();
+
+        foreach (var schedule in _schedulesFromFile)
+        {
+            if (!await AppendSchedule(schedule))
+            {
+                return BadRequest("Error appending schedule. Please check the data format.");
+            }
         }
 
         try
@@ -170,6 +201,25 @@ public class SchedulesController : Controller
         }
 
         return Json("data: \"success\"");
+    }
+
+    private async Task RemoveSchedules()
+    {
+        var schedules = await _context.Schedules.ToListAsync();
+        _context.Schedules.RemoveRange(schedules);
+        await _context.SaveChangesAsync();
+    }
+
+    private async Task<bool> AppendSchedule(Schedule schedule)
+    {
+        if (!ModelState.IsValid)
+        {
+            return false;
+        }
+
+        await _context.Schedules.AddAsync(schedule);
+        Console.WriteLine($"Appending schedule: {schedule.GroupId}, {schedule.Day}, {schedule.StartTime}, {schedule.EndTime}");
+        return true;
     }
 
     private bool ScheduleExists(int id)

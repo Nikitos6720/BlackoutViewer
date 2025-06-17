@@ -1,20 +1,30 @@
 using System.Diagnostics;
+using BlackoutViewer.Data;
 using BlackoutViewer.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BlackoutViewer.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly ApplicationDbContext _context;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
     {
         _logger = logger;
+        _context = context;
     }
 
     public IActionResult Index()
     {
+        return View();
+    }
+
+    public IActionResult ShowMyBlackouts()
+    {
+        ViewData["GroupId"] = new SelectList(_context.Groups, "Id", "Name");
         return View();
     }
 

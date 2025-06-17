@@ -34,7 +34,7 @@ public class ExcelDataConverter : IDataConverter
         }
 
         var names = values[0].Split(",");
-        if (int.TryParse(names[0], out int groupId))
+        if (!int.TryParse(names[0], out int groupId))
         {
             throw new FormatException("Group name is not in a valid format. Expected format: 'Group Name,Day enum'.");
         }

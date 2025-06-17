@@ -43,8 +43,42 @@ function ErrorImport(response) {
 }
 // #endregion
 
+
+
+// #region Select blackouts
+function LoadAddresses() {
+    var groupSelect = document.getElementById("group-select");
+    var selectedGroup = groupSelect.value;
+
+    if (selectedGroup === "0") {
+        alert("Please, select group.");
+        return;
+    }
+
+    $.ajax({
+        url: "/BlackoutList/SelectAddressesByGroup",
+        type: "Get",
+        data: { groupId: selectedGroup },
+        success: SuccessfulSelectAddresses,
+        error: ErrorSelectAddresses
+    });
+}
+
+function ShowOneDay() {
+    var oneDayList = document.getElementById("one-day-list");
+}
+
+function ShowOneWeek() {
+    var oneWeekList = document.getElementById("one-week-list");
+}
+// #endregion
+
+
+
 // #region Download Json File
 function DownloadJsonFile() {
-    window.location.href = "/Schedules/DownloadJsonFile";
+    var groupSelect = document.getElementById("group-select");
+    var selectedGroup = groupSelect.value;
+    window.location.href = "/BlackoutList/DownloadJsonFile?groupId=" + selectedGroup;
 }
 // #endregion

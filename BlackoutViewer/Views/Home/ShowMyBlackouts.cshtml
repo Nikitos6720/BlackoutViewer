@@ -1,0 +1,21 @@
+<h2>blackouts body address</h2>
+
+<div class="row">
+<div class="form-group m-2 d-flex flex-row justify-content-center">
+    <label class="control-label">Select a group to see blackouts:</label>
+    <select class="form-control" id="group-select" onchange="LoadAddresses()">
+        <option value="">-- Select a group --</option>
+        @foreach (var group in ViewBag.GroupId)
+        {
+            <option value="@group.Value">@group.Text</option>
+        }
+    </select>
+</div>
+
+<div>
+    <button class="btn btn-primary m-2" id="load-addresses-button" onclick="ShowOneDay()">For today</button>
+    <button class="btn btn-primary m-2" id="load-addresses-button" onclick="ShowOneWeek()">For week</button>
+    <button class="btn btn-primary m-2" id="load-addresses-button" onclick="DownloadJsonFile()">Export to JSON</button>
+    <partial name="ShowListForOneDay"/>
+    <partial name="ShowListForOneWeek" />
+</div>
