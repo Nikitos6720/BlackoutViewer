@@ -8,120 +8,119 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace BlackoutViewer.Migrations
+namespace BlackoutViewer.Migrations;
+
+[DbContext(typeof(ApplicationDbContext))]
+partial class ApplicationDbContextModelSnapshot : ModelSnapshot
 {
-    [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    protected override void BuildModel(ModelBuilder modelBuilder)
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
-        {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.6")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+        modelBuilder
+            .HasAnnotation("ProductVersion", "9.0.6")
+            .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+        NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("BlackoutViewer.Models.Address", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+        modelBuilder.Entity("BlackoutViewer.Models.Address", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("GroupId")
-                        .HasColumnType("integer");
+                b.Property<int?>("GroupId")
+                    .HasColumnType("integer");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                b.Property<string>("Title")
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnType("character varying(100)");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                b.HasIndex("GroupId");
 
-                    b.ToTable("Addresses", (string)null);
-                });
+                b.ToTable("Addresses", (string)null);
+            });
 
-            modelBuilder.Entity("BlackoutViewer.Models.Group", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+        modelBuilder.Entity("BlackoutViewer.Models.Group", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
+                b.Property<string>("Description")
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .HasColumnType("character varying(200)");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("text");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("Groups");
-                });
+                b.ToTable("Groups");
+            });
 
-            modelBuilder.Entity("BlackoutViewer.Models.Schedule", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+        modelBuilder.Entity("BlackoutViewer.Models.Schedule", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Day")
-                        .HasColumnType("integer");
+                b.Property<int>("Day")
+                    .HasColumnType("integer");
 
-                    b.Property<TimeOnly>("EndTime")
-                        .HasColumnType("time without time zone");
+                b.Property<TimeOnly>("EndTime")
+                    .HasColumnType("time without time zone");
 
-                    b.Property<int>("GroupId")
-                        .HasColumnType("integer");
+                b.Property<int>("GroupId")
+                    .HasColumnType("integer");
 
-                    b.Property<TimeOnly>("StartTime")
-                        .HasColumnType("time without time zone");
+                b.Property<TimeOnly>("StartTime")
+                    .HasColumnType("time without time zone");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                b.HasIndex("GroupId");
 
-                    b.ToTable("Schedules", (string)null);
-                });
+                b.ToTable("Schedules", (string)null);
+            });
 
-            modelBuilder.Entity("BlackoutViewer.Models.Address", b =>
-                {
-                    b.HasOne("BlackoutViewer.Models.Group", "Group")
-                        .WithMany("Addresses")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.SetNull);
+        modelBuilder.Entity("BlackoutViewer.Models.Address", b =>
+            {
+                b.HasOne("BlackoutViewer.Models.Group", "Group")
+                    .WithMany("Addresses")
+                    .HasForeignKey("GroupId")
+                    .OnDelete(DeleteBehavior.SetNull);
 
-                    b.Navigation("Group");
-                });
+                b.Navigation("Group");
+            });
 
-            modelBuilder.Entity("BlackoutViewer.Models.Schedule", b =>
-                {
-                    b.HasOne("BlackoutViewer.Models.Group", "Group")
-                        .WithMany("Schedules")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+        modelBuilder.Entity("BlackoutViewer.Models.Schedule", b =>
+            {
+                b.HasOne("BlackoutViewer.Models.Group", "Group")
+                    .WithMany("Schedules")
+                    .HasForeignKey("GroupId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
 
-                    b.Navigation("Group");
-                });
+                b.Navigation("Group");
+            });
 
-            modelBuilder.Entity("BlackoutViewer.Models.Group", b =>
-                {
-                    b.Navigation("Addresses");
+        modelBuilder.Entity("BlackoutViewer.Models.Group", b =>
+            {
+                b.Navigation("Addresses");
 
-                    b.Navigation("Schedules");
-                });
+                b.Navigation("Schedules");
+            });
 #pragma warning restore 612, 618
-        }
     }
 }

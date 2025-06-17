@@ -1,4 +1,5 @@
-﻿function OpenImportForm() {
+﻿// #region Import Form
+function OpenImportForm() {
     var importForm = document.getElementById("data-from-excel-form");
     importForm.showModal();
 }
@@ -25,11 +26,25 @@ function UploadData(event) {
         data: formData,
         processData: false,
         contentType: false,
-        success: function (response) {
-            alert("Successful uploading");
-        },
-        error: function (response) {
-            alert("Error of data formatting");
-        }
+        success: SuccessfulImport,
+        error: ErrorImport
     });
 }
+
+function SuccessfulImport(response) {
+    var importForm = document.getElementById("data-from-excel-form");
+
+    alert("Successful uploading");
+    importForm.close();
+}
+
+function ErrorImport(response) {
+    alert("Error of data formatting");
+}
+// #endregion
+
+// #region Download Json File
+function DownloadJsonFile() {
+    window.location.href = "/Schedules/DownloadJsonFile";
+}
+// #endregion
