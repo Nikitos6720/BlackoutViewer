@@ -10,7 +10,7 @@ function CloseImportForm() {
 }
 
 function UploadData(event) {
-    var file = event.target.files[0]; // Получаем файл
+    var file = event.target.files[0];
 
     if (!file) {
         alert("Please, select file.");
@@ -33,9 +33,21 @@ function UploadData(event) {
 
 function SuccessfulImport(response) {
     var importForm = document.getElementById("data-from-excel-form");
-
-    alert("Successful uploading");
+    response.forEach(AppendToList);
     importForm.close();
+    window.location.reload();
+}
+
+function AppendToList(item) {
+    var body = document.getElementById("schedule-table-body");
+    body.innerHTML = "";
+
+    var tr = $("<tr></tr>");
+    tr.append("<td>" + item.day + "</td>");
+    tr.append("<td>" + item.startTime + "</td>");
+    tr.append("<td>" + item.endTime + "</td>");
+    tr.append("<td>" + "" + "</td>");
+    body.append(tr);
 }
 
 function ErrorImport(response) {
@@ -46,7 +58,78 @@ function ErrorImport(response) {
 
 
 // #region Select blackouts
-function LoadAddresses() {
+function ShowBlackoutInfo() {
+    var groupSelect = document.getElementById("group-select");
+    var selectedGroup = groupSelect.value;
+
+    $.ajax({
+        url: "/BlackoutList/GetGroup",
+        type: "Get",
+        data: { groupId: selectedGroup },
+        success: SuccessfulSelectGroup,
+        error: function() {
+            alert("Error retrieving blackout information.");
+        }
+    });
+}
+
+function SuccessfulSelectGroup(response) {
+    var blackoutInfo = document.getElementById("blackout-info");
+    blackoutInfo.innerHTML = "";
+    if (response) {
+        blackoutInfo.textContent = response;
+    } else {
+        blackoutInfo.textContent = "No blackout information available for this group.";
+    }
+}
+
+function ShowOneDay() {
+    var oneDayList = document.getElementById("one-day-list");
+    var oneWeekList = document.getElementById("one-week-list");
+    oneDayList.classList.remove("d-none");
+    oneWeekList.classList.add("d-none");
+
+    var groupSelect = document.getElementById("group-select");
+    var selectedGroup = groupSelect.value;
+    
+    if (selectedGroup === "0" || selectedGroup == null) {
+        alert("Please, select group.");
+        return;
+    }
+
+    $.ajax({
+        url: "/BlackoutList/SelectOneDay",
+        type: "Get",
+        data: { groupId: selectedGroup },
+        success: SuccessfulInsertData,
+        error: ErrorInsertData
+    });
+}
+
+function SuccessfulInsertData(response) {
+    var list = document.getElementById("today-list");
+    list.innerHTML = "";
+    response.forEach(AppendSchedule);
+}
+
+function AppendSchedule(item) {
+    var list = document.getElementById("today-list");
+    var p = document.createElement("p");
+    p.className = "list-group-item";
+    p.textContent = item.startTime + " - " + item.endTime;
+    list.appendChild(p);
+}
+
+function ErrorInsertData(response) {
+    alert("Error of data formatting");
+}
+
+function ShowOneWeek() {
+    var oneDayList = document.getElementById("one-day-list");
+    var oneWeekList = document.getElementById("one-week-list");
+    oneDayList.classList.add("d-none");
+    oneWeekList.classList.remove("d-none");
+
     var groupSelect = document.getElementById("group-select");
     var selectedGroup = groupSelect.value;
 
@@ -56,20 +139,32 @@ function LoadAddresses() {
     }
 
     $.ajax({
-        url: "/BlackoutList/SelectAddressesByGroup",
+        url: "/BlackoutList/SelectSchedulesByGroup",
         type: "Get",
         data: { groupId: selectedGroup },
-        success: SuccessfulSelectAddresses,
-        error: ErrorSelectAddresses
+        success: SuccessfulInsertDataForWeek,
+        error: ErrorInsertDataForWeek
     });
 }
 
-function ShowOneDay() {
-    var oneDayList = document.getElementById("one-day-list");
+function SuccessfulInsertDataForWeek(response) {
+    for (var i = 0; i < 7; i++) {
+        var list = document.getElementById(i + "-list");
+        list.innerHTML = "";
+    }
+    response.forEach(AppendScheduleForWeek);
 }
 
-function ShowOneWeek() {
-    var oneWeekList = document.getElementById("one-week-list");
+function AppendScheduleForWeek(item) {
+    var list = document.getElementById(item.day + "-list");
+    var p = document.createElement("p");
+    p.className = "list-group-item";
+    p.textContent = item.startTime + " - " + item.endTime;
+    list.appendChild(p);
+}
+
+function ErrorInsertDataForWeek(response) {
+    alert("Error of data formatting");
 }
 // #endregion
 

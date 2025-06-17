@@ -1,9 +1,9 @@
-<h2>blackouts body address</h2>
+<h2>Blackouts schedule to my group</h2>
 
 <div class="row">
 <div class="form-group m-2 d-flex flex-row justify-content-center">
     <label class="control-label">Select a group to see blackouts:</label>
-    <select class="form-control" id="group-select" onchange="LoadAddresses()">
+    <select class="form-control" id="group-select" onchange="ShowBlackoutInfo()">
         <option value="">-- Select a group --</option>
         @foreach (var group in ViewBag.GroupId)
         {
@@ -12,10 +12,13 @@
     </select>
 </div>
 
+<p id="blackout-info"></p>
+
 <div>
     <button class="btn btn-primary m-2" id="load-addresses-button" onclick="ShowOneDay()">For today</button>
     <button class="btn btn-primary m-2" id="load-addresses-button" onclick="ShowOneWeek()">For week</button>
     <button class="btn btn-primary m-2" id="load-addresses-button" onclick="DownloadJsonFile()">Export to JSON</button>
+
     <partial name="ShowListForOneDay"/>
     <partial name="ShowListForOneWeek" />
 </div>

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using BlackoutViewer.Data;
 using BlackoutViewer.Models;
 using BlackoutViewer.Data.FileDataConverter;
+using System.Text.Json;
 
 namespace BlackoutViewer.Controllers;
 
@@ -166,41 +167,13 @@ public class SchedulesController : Controller
         {
             await _context.SaveChangesAsync();
         }
-        catch (DbUpdateException ex)
-        {
-            return BadRequest($"Error saving schedules: {ex.Message}");
-        }
-        return Json("data: \"success\"");
-    }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateList()
-    {
-        if (_schedulesFromFile.Count == 0)
-        {
-            return BadRequest("No valid schedules found in the file.");
-        }
-
-        await RemoveSchedules();
-
-        foreach (var schedule in _schedulesFromFile)
-        {
-            if (!await AppendSchedule(schedule))
-            {
-                return BadRequest("Error appending schedule. Please check the data format.");
-            }
-        }
-
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
         catch (DbUpdateException ex)
         {
             return BadRequest($"Error saving schedules: {ex.Message}");
         }
 
-        return Json("data: \"success\"");
+        return Json(_schedulesFromFile);
     }
 
     private async Task RemoveSchedules()
